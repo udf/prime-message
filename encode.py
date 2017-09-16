@@ -18,18 +18,19 @@ def eratosthenes():
             D[q*q] = q
         q += 1
 
-gen = eratosthenes()
-product = 1
-msg = "".join(sys.argv[1:])
-length = len(msg)
-for i, char in enumerate(msg):
-    char_ord = ord(char)
-    while True:
-        n = next(gen)
-        if (n >> 1) & 0b11111111 == char_ord:
-            print("{}/{} = {}".format(i+1, length, n), end="\r")
-            product *= n
-            break
 
-print()
-print(product)
+def encode(msg):
+    gen = eratosthenes()
+    product = 1
+    for c in msg:
+        target = ord(c)
+        while True:
+            n = next(gen)
+            if (n >> 1) & 0xff == target:
+                product *= n
+                break
+    return product
+
+
+if __name__ == '__main__':
+    print(encode(' '.join(sys.argv[1:])))
