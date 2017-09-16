@@ -1,23 +1,23 @@
 import sys
 
 def eratosthenes():
-    # Slightly modified version from:
+    # Slightly modified version from the second page:
     # archive.oreilly.com/pub/a/python/excerpt/pythonckbk_chap1/index1.html
     # Check 'if p' instead 'if p is None', which is around 15% faster.
+    q = 3
     D = {}
-    q = 2
+    yield 2
     while True:
         p = D.pop(q, None)
         if p:
             x = p + q
-            while x in D:
+            while x in D or not (x&1):
                 x += p
             D[x] = p
         else:
             yield q
             D[q*q] = q
-        q += 1
-
+        q += 2
 
 def encode(msg):
     gen = eratosthenes()
