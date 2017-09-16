@@ -27,8 +27,9 @@ for i, char in enumerate(msg):
     while True:
         n = next(gen)
         if (n >> 1) & 0b11111111 == char_ord:
-            print("{}/{} = {}".format(i, length, n), end="\r")
+            print("{}/{} = {}".format(i+1, length, n), end="\r")
             product *= n
             break
 
+print()
 print(product)
