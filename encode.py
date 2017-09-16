@@ -1,18 +1,26 @@
 import sys
 
 def eratosthenes():
-    # Slightly modified version from the second page:
+    # Modified version from the second page:
     # archive.oreilly.com/pub/a/python/excerpt/pythonckbk_chap1/index1.html
-    # Check 'if p' instead 'if p is None', which is around 15% faster.
     q = 3
     D = {}
     yield 2
     while True:
         p = D.pop(q, None)
+        # Check 'if p' instead 'if p is None', which is around 15% faster.
         if p:
-            x = p + q
-            while x in D or not (x&1):
-                x += p
+            # Used to be 'x = p + q', and then 'or x even' in the loop,
+            # implemented as 'or not (x&1)'.
+            #
+            # We know that q is always odd, and p is q*q (where q is odd prime)
+            # Multiplying an odd number by any other (or even itself) is always
+            # odd. Adding two odds together is always even, so we always need
+            # to add p again, or simply add 2p. This is around 30% faster.
+            p2 = p * 2
+            x = p2 + q
+            while x in D:
+                x += p2
             D[x] = p
         else:
             yield q
