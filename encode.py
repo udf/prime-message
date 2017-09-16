@@ -1,18 +1,22 @@
 import sys
 
 def eratosthenes():
+    # Slightly modified version from:
+    # archive.oreilly.com/pub/a/python/excerpt/pythonckbk_chap1/index1.html
+    # Check 'if p' instead 'if p is None', which is around 15% faster.
     D = {}
-    q = 2  
-    while 1:
-        if q not in D:
-            yield q
-            D[q*q] = [q]
+    q = 2
+    while True:
+        p = D.pop(q, None)
+        if p:
+            x = p + q
+            while x in D:
+                x += p
+            D[x] = p
         else:
-            for p in D[q]:
-                D.setdefault(p+q,[]).append(p)
-            del D[q]
+            yield q
+            D[q*q] = q
         q += 1
-
 
 gen = eratosthenes()
 product = 1
